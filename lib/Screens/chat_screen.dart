@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_gpt/Constants/constants.dart';
+import 'package:flutter_chat_gpt/Models/chat_model.dart';
 import 'package:flutter_chat_gpt/Services/assets_manager.dart';
+import 'package:flutter_chat_gpt/Services/services.dart';
+import 'package:flutter_chat_gpt/Widgets/chat_widget.dart';
+import 'package:flutter_chat_gpt/Widgets/text_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -31,14 +35,16 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              await Services.showModalSheet(context: context);
+            },
             icon: const Icon(
               Icons.more_vert_outlined,
               color: Colors.white,
             ),
           ),
         ],
-        title: Text('Chat-GPT'),
+        title: const Text('Chat-GPT'),
       ),
       body: SafeArea(
         child: Column(
@@ -48,16 +54,25 @@ class _ChatScreenState extends State<ChatScreen> {
                 // shrinkWrap: true,
                 itemCount: 6,
                 itemBuilder: (BuildContext context, int index) {
-                  return Text("HEllo");
+                  return ChatWidget(
+                    msg: "${chatMessages[index]["msg"]}",
+                    chatIndex: int.parse("${chatMessages[index]["chatIndex"]}"),
+                  );
                 },
               ),
             ),
+
+            ///Spin Kit Loader
             if (isTyping) ...[
-              SpinKitThreeBounce(
+              const SpinKitThreeBounce(
                 color: Colors.white,
                 size: 18,
               ),
+
+              ///SizedBox
               const SizedBox(height: 20),
+
+              ///Creates a piece of material.
               Material(
                 color: AppColors.cardColor,
                 child: Padding(
@@ -66,12 +81,12 @@ class _ChatScreenState extends State<ChatScreen> {
                     children: [
                       Expanded(
                         child: TextField(
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                           controller: textEditingController,
                           onSubmitted: (v) {
                             ///
                           },
-                          decoration: InputDecoration.collapsed(
+                          decoration: const InputDecoration.collapsed(
                             hintText: "Hello, How Can I Help You?",
                             hintStyle: TextStyle(color: Colors.grey),
                             // border: OutlineInputBorder(),
@@ -81,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         onPressed: () {},
                         icon: const Icon(
-                          Icons.add,
+                          Icons.send_outlined,
                           color: Colors.white,
                         ),
                       ),
