@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_chat_gpt/Models/model_of_models.dart';
+import 'package:flutter_chat_gpt/Services/api_services.dart';
 
 class ModelsProvider with ChangeNotifier {
   // String currentModel = "text-davinci-003";
@@ -20,7 +22,7 @@ class ModelsProvider with ChangeNotifier {
   }
 
   Future<List<ModelsModel>> getAllModels() async {
-    modelsList = await ApiService.getModels();
+    modelsList = await ApiServices.getModels();
     return modelsList;
   }
 }
