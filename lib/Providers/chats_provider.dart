@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_gpt/Models/chat_model.dart';
-import 'package:flutter_chat_gpt/Services/api_services.dart';
+
+import '../models/chat_model.dart';
+import '../services/api_service.dart';
 
 class ChatProvider with ChangeNotifier {
   List<ChatModel> chatList = [];
@@ -14,16 +15,16 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> sendMessageAndGetAnswers(
-      {required String msg, required String choosenModelId}) async {
-    if (choosenModelId.toLowerCase().startsWith("gpt")) {
-      chatList.addAll(await ApiServices.sendMessageGPT(
+      {required String msg, required String chosenModelId}) async {
+    if (chosenModelId.toLowerCase().startsWith("gpt")) {
+      chatList.addAll(await ApiService.sendMessageGPT(
         message: msg,
-        modelId: choosenModelId,
+        modelId: chosenModelId,
       ));
     } else {
-      chatList.addAll(await ApiServices.sendMessage(
+      chatList.addAll(await ApiService.sendMessage(
         message: msg,
-        modelId: choosenModelId,
+        modelId: chosenModelId,
       ));
     }
     notifyListeners();

@@ -1,35 +1,44 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_gpt/Constants/constants.dart';
-import 'package:flutter_chat_gpt/Screens/chat_screen.dart';
+import 'package:flutter_chat_gpt/providers/models_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'constants/constants.dart';
+import 'providers/chats_provider.dart';
+import 'screens/chat_screen.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      ///title
-      title: 'CHAT-GPT'.toUpperCase(),
-
-      ///debugShowCheckedModeBanner
-      debugShowCheckedModeBanner: false,
-
-      ///theme
-      theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
-        appBarTheme: const AppBarTheme(
-          color: AppColors.cardColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ModelsProvider(),
         ),
-        textTheme: GoogleFonts.firaSansTextTheme(
-          Theme.of(context).textTheme,
+        ChangeNotifierProvider(
+          create: (_) => ChatProvider(),
         ),
+      ],
+      child: MaterialApp(
+        title: 'Chat-Gpt',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          scaffoldBackgroundColor: scaffoldBackgroundColor,
+          appBarTheme: AppBarTheme(
+            color: cardColor,
+          ),
+
+          ///Default Text Theme
+          textTheme: GoogleFonts.firaSansTextTheme(
+            Theme.of(context).textTheme,
+          ),
+        ),
+        home: const ChatScreen(),
       ),
-
-      ///home
-      home: const ChatScreen(),
     );
   }
 }

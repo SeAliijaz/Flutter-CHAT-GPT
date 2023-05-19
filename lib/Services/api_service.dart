@@ -2,30 +2,32 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter_chat_gpt/Constants/constants.dart';
-import 'package:flutter_chat_gpt/Models/chat_model.dart';
-import 'package:flutter_chat_gpt/Models/model_of_models.dart';
+import 'package:flutter_chat_gpt/constants/api_consts.dart';
+import 'package:flutter_chat_gpt/models/chat_model.dart';
+import 'package:flutter_chat_gpt/models/models_of_model.dart';
 import 'package:http/http.dart' as http;
 
-class ApiServices {
+class ApiService {
   static Future<List<ModelsModel>> getModels() async {
     try {
       var response = await http.get(
-        Uri.parse("${APIConstants.baseURL}/models"),
-        headers: {'Authorization': 'Bearer ${APIConstants.apiKEY}'},
+        Uri.parse("${ApiConstants.baseUrl}/models"),
+        headers: {'Authorization': 'Bearer ${ApiConstants.apiKey}'},
       );
 
       Map jsonResponse = jsonDecode(response.body);
 
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
+        /// print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
-      // print("jsonResponse $jsonResponse");
+
+      /// print("jsonResponse $jsonResponse");
       List temp = [];
       for (var value in jsonResponse["data"]) {
         temp.add(value);
-        // log("temp ${value["id"]}");
+
+        /// log("temp ${value["id"]}");
       }
       return ModelsModel.modelsFromSnapshot(temp);
     } catch (error) {
@@ -34,15 +36,15 @@ class ApiServices {
     }
   }
 
-  // Send Message using ChatGPT API
+  /// Send Message using ChatGPT API
   static Future<List<ChatModel>> sendMessageGPT(
       {required String message, required String modelId}) async {
     try {
       log("modelId $modelId");
       var response = await http.post(
-        Uri.parse("${APIConstants.baseURL}/chat/completions"),
+        Uri.parse("${ApiConstants.baseUrl}/chat/completions"),
         headers: {
-          'Authorization': 'Bearer ${APIConstants.apiKEY}',
+          'Authorization': 'Bearer ${ApiConstants.apiKey}',
           "Content-Type": "application/json"
         },
         body: jsonEncode(
@@ -58,15 +60,15 @@ class ApiServices {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
+      /// Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
+        /// print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
+        /// log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(
@@ -82,15 +84,15 @@ class ApiServices {
     }
   }
 
-  // Send Message fct
+  /// Send Message fct
   static Future<List<ChatModel>> sendMessage(
       {required String message, required String modelId}) async {
     try {
       log("modelId $modelId");
       var response = await http.post(
-        Uri.parse("${APIConstants.baseURL}/completions"),
+        Uri.parse("${ApiConstants.baseUrl}/completions"),
         headers: {
-          'Authorization': 'Bearer ${APIConstants.apiKEY}',
+          'Authorization': 'Bearer ${ApiConstants.apiKey}',
           "Content-Type": "application/json"
         },
         body: jsonEncode(
@@ -102,16 +104,15 @@ class ApiServices {
         ),
       );
 
-      // Map jsonResponse = jsonDecode(response.body);
-
+      /// Map jsonResponse = jsonDecode(response.body);
       Map jsonResponse = json.decode(utf8.decode(response.bodyBytes));
       if (jsonResponse['error'] != null) {
-        // print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
+        /// print("jsonResponse['error'] ${jsonResponse['error']["message"]}");
         throw HttpException(jsonResponse['error']["message"]);
       }
       List<ChatModel> chatList = [];
       if (jsonResponse["choices"].length > 0) {
-        // log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
+        /// log("jsonResponse[choices]text ${jsonResponse["choices"][0]["text"]}");
         chatList = List.generate(
           jsonResponse["choices"].length,
           (index) => ChatModel(

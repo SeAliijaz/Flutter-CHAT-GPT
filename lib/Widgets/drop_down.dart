@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_gpt/Models/model_of_models.dart';
-import 'package:flutter_chat_gpt/Providers/models_provider.dart';
+import 'package:flutter_chat_gpt/models/models_of_model.dart';
+import 'package:flutter_chat_gpt/providers/models_provider.dart';
 import 'package:flutter_chat_gpt/widgets/text_widget.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
+
 import '../constants/constants.dart';
 
 class ModelsDrowDownWidget extends StatefulWidget {
@@ -43,7 +44,7 @@ class _ModelsDrowDownWidgetState extends State<ModelsDrowDownWidget> {
               ? const SizedBox.shrink()
               : FittedBox(
                   child: DropdownButton(
-                    dropdownColor: AppColors.scaffoldBackgroundColor,
+                    dropdownColor: scaffoldBackgroundColor,
                     iconEnabledColor: Colors.white,
                     items: List<DropdownMenuItem<String>>.generate(
                         snapshot.data!.length,

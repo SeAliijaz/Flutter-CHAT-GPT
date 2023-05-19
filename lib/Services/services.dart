@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_gpt/Widgets/drop_down.dart';
+
 import '../constants/constants.dart';
+import '../widgets/drop_down.dart';
 import '../widgets/text_widget.dart';
 
 class Services {
@@ -11,7 +12,7 @@ class Services {
             top: Radius.circular(20),
           ),
         ),
-        backgroundColor: AppColors.scaffoldBackgroundColor,
+        backgroundColor: scaffoldBackgroundColor,
         context: context,
         builder: (context) {
           return Padding(
@@ -21,7 +22,7 @@ class Services {
               children: const [
                 Flexible(
                   child: TextWidget(
-                    label: "Select Model:",
+                    label: "Chosen Model:",
                     fontSize: 16,
                   ),
                 ),
